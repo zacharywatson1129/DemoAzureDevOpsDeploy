@@ -35,12 +35,12 @@ jobs:
 
     # Publish
     - name: Build
-      run: dotnet publis --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
+      run: dotnet publish --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
 
     # Zip up the bin folder
     - name: Zip bin folder
       run: |
-        Compress-Archive -Path ./bin/DemoAzureDevOpsDeploy -DestinationPath ./DemoAzureDevOpsDeploy.zip
+        Compress-Archive -Path ./publish bin/ -DestinationPath ./DemoAzureDevOpsDeploy.zip
 
     # Now that it's built, actually create the Github Release
     - name: Create GitHub Release
