@@ -27,15 +27,15 @@ jobs:
 
     # Install any nuget packages
     - name: Install dependencies
-      run: dotnet restore DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
+      run: dotnet restore DemoWinformsApp/DemoWinformsApp.csproj
 
     # Build the application
     - name: Build
-      run: dotnet build --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
+      run: dotnet build --configuration Release DemoWinformsApp/DemoWinformsApp.csproj
 
     # Publish the application
     - name: Publish
-      run: dotnet publish --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj -o ./publish
+      run: dotnet publish --configuration Release DemoWinformsApp/DemoWinformsApp.csproj -o ./publish
 
     # Zip up the publish folder
     - name: Zip publish folder
