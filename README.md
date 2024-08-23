@@ -3,4 +3,4 @@ A demo project containing a Winforms app to demonstrate publishing downloadable 
 
 This demo has a very simple GitHub pages website, soley for listing my "downloads" of this project.
 
-Download now
+Download now [here](https://github.com/zacharywatson1129/DemoAzureDevOpsDeploy/releases/tag/v1.0.1)
