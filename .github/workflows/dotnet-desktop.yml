@@ -1,4 +1,3 @@
-
 name: Build and Release
 
 on:
@@ -12,6 +11,7 @@ on:
         description: 'Trigger deployment'
         required: true
         type: boolean
+
 jobs:
   build:
     runs-on: windows-latest
@@ -27,22 +27,21 @@ jobs:
 
     # Install any nuget packages
     - name: Install dependencies
-      uses: dotnet restore DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
+      run: dotnet restore DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
 
     # Build the application
     - name: Build
       run: dotnet build --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
 
-    # Publish
-    - name: Build
-      run: dotnet publish --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj
+    # Publish the application
+    - name: Publish
+      run: dotnet publish --configuration Release DemoAzureDevOpsDeploy/DemoAzureDevOpsDeploy.csproj -o ./publish
 
-    # Zip up the bin folder
-    - name: Zip bin folder
-      run: |
-        Compress-Archive -Path ./publish bin/ -DestinationPath ./DemoAzureDevOpsDeploy.zip
+    # Zip up the publish folder
+    - name: Zip publish folder
+      run: Compress-Archive -Path ./publish -DestinationPath ./DemoAzureDevOpsDeploy.zip
 
-    # Now that it's built, actually create the Github Release
+    # Now that it's built, actually create the GitHub Release
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
@@ -55,24 +54,24 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # The release is created, we upload it now.
+    # The release is created, we upload it now
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       with: 
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./YourApp.zip
-        asset_name: YourApp.zip
+        asset_path: ./DemoAzureDevOpsDeploy.zip
+        asset_name: DemoAzureDevOpsDeploy.zip
         asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Update the README to download the latest app version.
+    # Update the README to download the latest app version
     - name: Update README with release link
       run: |
         $releaseUrl = "https://github.com/${{ github.repository }}/releases/tag/${{ github.event.inputs.release_tag }}"
         (Get-Content README.md) -replace "Download now", "Download now [here]($releaseUrl)" | Set-Content README.md
 
-    #Everything else is good, commit and push.
+    # Commit and push changes
     - name: Commit and push changes
       uses: EndBug/add-and-commit@v9
       with:
