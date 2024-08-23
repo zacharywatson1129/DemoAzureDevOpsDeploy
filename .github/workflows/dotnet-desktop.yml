@@ -12,7 +12,9 @@ on:
         required: true
         type: boolean
 
-
+permissions:
+  contents: write
+  issues: read
 
 jobs:
   print-token:
