@@ -16,11 +16,16 @@ on:
 
 jobs:
   print-token:
-    permissions: write-all
-    name: print-token
+    runs-on: windows-latest  # Change to windows-latest if needed
+    permissions:
+      contents: read
+      actions: read
+      # Add other permissions as needed, adjust according to your needs
     environment: dev
-    # needs: pre-pkr
-    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print GitHub Token
+        run: echo ${{ secrets.GITHUB_TOKEN }}
     
   build:
     runs-on: windows-latest
