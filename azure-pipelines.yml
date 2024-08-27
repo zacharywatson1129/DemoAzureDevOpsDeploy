@@ -42,7 +42,7 @@ steps:
 
 - task: GitHubRelease@0
   inputs:
-    gitHubConnection: 'GitHubConnection'  # The name of your GitHub service connection
+    gitHubConnection: 'github.com_zacharywatson1129'  # The name of your GitHub service connection
     repositoryName: 'zacharywatson1129/DemoAzureDevOpsDeploy>'
     tagSource: 'manual'
     tag: 'v1.0.2'  # Adjust as needed
