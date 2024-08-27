@@ -20,16 +20,13 @@ steps:
 - script: echo Test Script Output...Start of pipeline!
   displayName: 'Running a one-line test script'
 
-- script: Dir -Recurse .\ | Get-Childitem
-  displayName: 'Printing current directory'
-
-- script: dotnet restore 'DemoWinformsApp/DemoWinformsApp.csproj'
+- script: dotnet restore './DemoWinformsApp/DemoWinformsApp.csproj'
   displayName: 'Restore NuGet packages'
 
-- script: dotnet build 'DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
+- script: dotnet build './DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
   displayName: 'Build project'
 
-- script: dotnet publish 'DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
+- script: dotnet publish './DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
   displayName: 'Publish project'
 
 - task: ArchiveFiles@2
