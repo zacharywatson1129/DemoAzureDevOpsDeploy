@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.0'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+
+- script: echo Test Script Output...Start of pipeline!
+  displayName: 'Running a one-line test script'
+
+- script: dotnet restore 'DemoWinformsApp/DemoWinformsApp.csproj'
+  displayName: 'Restore NuGet packages'
+
+- script: dotnet build 'DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
+  displayName: 'Build project'
+
+- script: dotnet publish 'DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
+  displayName: 'Publish project'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/DemoAzureDevOpsDeploy.zip'
+    replaceExistingArchive: true
+
+- publish: $(Build.ArtifactStagingDirectory)/DemoAzureDevOpsDeploy.zip
+  artifact: DemoAzureDevOpsDeploy
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'GitHubConnection'  # The name of your GitHub service connection
+    repositoryName: 'zacharywatson1129/DemoAzureDevOpsDeploy>'
+    tagSource: 'manual'
+    tag: 'v1.0.2'  # Adjust as needed
+    title: 'Release v1.0.2'
+    assets: '$(Build.ArtifactStagingDirectory)/DemoAzureDevOpsDeploy.zip'
+
+- script: |
+    echo Finishing up! ----End of pipeline
+  displayName: 'Final script'
