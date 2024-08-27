@@ -16,20 +16,26 @@ steps:
     version: '8.x'
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
-
 - script: echo Test Script Output...Start of pipeline!
   displayName: 'Running a one-line test script'
 
-- script: dir ./DemoWinformsApp
+- script: |
+    echo "Listing root directory contents"
+    dir $(Build.SourcesDirectory)
+  displayName: 'List root directory contents'
+
+- script: |
+    echo "Listing contents of DemoWinformsApp"
+    dir $(Build.SourcesDirectory)/DemoWinformsApp
   displayName: 'List contents of DemoWinformsApp directory'
 
-- script: dotnet restore './DemoWinformsApp/DemoWinformsApp.csproj'
+- script: dotnet restore '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj'
   displayName: 'Restore NuGet packages'
 
-- script: dotnet build './DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
+- script: dotnet build '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
   displayName: 'Build project'
 
-- script: dotnet publish './DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
+- script: dotnet publish '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
   displayName: 'Publish project'
 
 - task: ArchiveFiles@2
@@ -46,7 +52,7 @@ steps:
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: 'github.com_zacharywatson1129'  # The name of your GitHub service connection
-    repositoryName: 'zacharywatson1129/DemoAzureDevOpsDeploy>'
+    repositoryName: 'zacharywatson1129/DemoAzureDevOpsDeploy'
     tagSource: 'manual'
     tag: 'v1.0.2'  # Adjust as needed
     title: 'Release v1.0.2'
