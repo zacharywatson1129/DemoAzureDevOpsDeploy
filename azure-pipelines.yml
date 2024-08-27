@@ -24,9 +24,7 @@ steps:
     dir $(Build.SourcesDirectory)
   displayName: 'List root directory contents'
 
-- script: |
-    echo "Listing contents of DemoWinformsApp"
-    dir $(Build.SourcesDirectory)/DemoWinformsApp
+- script: dir $(Build.SourcesDirectory)\DemoWinformsApp
   displayName: 'List contents of DemoWinformsApp directory'
 
 - script: dotnet restore '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj'
