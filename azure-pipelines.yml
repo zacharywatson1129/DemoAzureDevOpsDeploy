@@ -24,16 +24,24 @@ steps:
     dir $(Build.SourcesDirectory)
   displayName: 'List root directory contents'
 
-- script: dir $(Build.SourcesDirectory)\DemoWinformsApp
+- script: |
+    echo "Listing contents of DemoWinformsApp"
+    dir $(Build.SourcesDirectory)\DemoWinformsApp
   displayName: 'List contents of DemoWinformsApp directory'
 
-- script: dotnet restore '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj'
+- script: |
+    echo "Restoring NuGet packages"
+    dotnet restore $(Build.SourcesDirectory)\DemoWinformsApp\DemoWinformsApp.csproj
   displayName: 'Restore NuGet packages'
 
-- script: dotnet build '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration)
+- script: |
+    echo "Building project"
+    dotnet build $(Build.SourcesDirectory)\DemoWinformsApp\DemoWinformsApp.csproj --configuration $(buildConfiguration)
   displayName: 'Build project'
 
-- script: dotnet publish '$(Build.SourcesDirectory)/DemoWinformsApp/DemoWinformsApp.csproj' --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
+- script: |
+    echo "Publishing project"
+    dotnet publish $(Build.SourcesDirectory)\DemoWinformsApp\DemoWinformsApp.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
   displayName: 'Publish project'
 
 - task: ArchiveFiles@2
