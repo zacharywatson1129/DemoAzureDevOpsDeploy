@@ -20,6 +20,9 @@ steps:
 - script: echo Test Script Output...Start of pipeline!
   displayName: 'Running a one-line test script'
 
+- script: dir ./DemoWinformsApp
+  displayName: 'List contents of DemoWinformsApp directory'
+
 - script: dotnet restore './DemoWinformsApp/DemoWinformsApp.csproj'
   displayName: 'Restore NuGet packages'
 
